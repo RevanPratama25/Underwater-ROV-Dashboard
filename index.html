@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SE - PHON 32 | Underwater Drone Dashboard</title>
+    <title>SE - PHON 32 | Aquatic ROV Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
@@ -19,304 +19,356 @@
                         sans: ['Outfit', 'sans-serif'],
                     },
                     colors: {
-                        brand: {
-                            dark: '#09090b',
-                            card: '#18181b',
-                            border: '#27272a',
-                            accent: '#3b82f6'
+                        ocean: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                            dark: '#040d1a',   // Laut dalam
+                            card: '#0a172b',   // Kartu dark mode
+                            border: '#152c4d', // Border biru gelap
+                        },
+                        aqua: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            accent: '#00e6e6'  // Aksen neon cyan
                         }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(6, 182, 212, 0.3)',
+                        'glow-dark': '0 0 20px rgba(0, 230, 230, 0.15)',
                     }
                 }
             }
         }
     </script>
     <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
         @keyframes pulse-soft {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.7;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         .animate-pulse-soft {
             animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
+        /* Glassmorphism Effect */
         .glass {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(0, 100, 200, 0.05);
         }
 
         .dark .glass {
-            background: rgba(24, 24, 27, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 23, 43, 0.65);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #09090b;
+            background: transparent;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #27272a;
+            background: #cbd5e1;
             border-radius: 10px;
         }
 
+        .dark ::-webkit-scrollbar-thumb {
+            background: #1e3a5f;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        /* Tab Transitions */
+        .tab-btn {
+            position: relative;
+        }
+        
         .tab-active {
-            color: #3b82f6;
-            border-bottom: 2px solid #3b82f6;
+            color: #06b6d4;
+            font-weight: 700;
+        }
+        
+        .tab-active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #06b6d4;
+            border-radius: 2px;
+            box-shadow: 0 0 8px #06b6d4;
         }
     </style>
 </head>
 
 <body
-    class="bg-zinc-50 dark:bg-brand-dark text-slate-900 dark:text-slate-100 min-h-screen font-sans transition-colors duration-300">
+    class="bg-ocean-50 dark:bg-ocean-dark text-slate-800 dark:text-slate-200 min-h-screen font-sans transition-colors duration-500 relative overflow-x-hidden">
 
-    <!-- Header -->
-    <header class="border-b border-zinc-200 dark:border-brand-border sticky top-0 z-50 glass">
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400/20 dark:bg-aqua-500/10 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-[-10%] right-[-5%] w-[30rem] h-[30rem] bg-cyan-400/20 dark:bg-blue-600/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <header class="sticky top-0 z-50 glass border-b border-white/50 dark:border-ocean-border/80 transition-all">
         <div class="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex flex-col">
-                <h1 class="text-xl font-bold tracking-wider leading-none">SE - PHON 32</h1>
-                <p class="text-[10px] text-zinc-500 font-semibold tracking-widest mt-1 uppercase">Integrated Hydro
-                    Observation Platform</p>
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                    <i data-lucide="waves" class="w-6 h-6 text-white"></i>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-xl font-extrabold tracking-wide text-slate-900 dark:text-white leading-none">SE<span class="text-aqua-500">-</span>PHON 32</h1>
+                    <p class="text-[10px] text-blue-600/80 dark:text-aqua-400/80 font-bold tracking-[0.15em] mt-1 uppercase">Hydro Observation Platform</p>
+                </div>
             </div>
 
-            <div class="flex items-center gap-8">
-                <!-- Theme Toggle -->
+            <div class="flex items-center gap-6 md:gap-8">
                 <button id="themeToggle"
-                    class="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors">
-                    <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-400"></i>
+                    class="p-2.5 rounded-xl bg-white/50 dark:bg-ocean-card/50 border border-slate-200 dark:border-ocean-border hover:bg-white dark:hover:bg-ocean-border transition-all shadow-sm">
+                    <i data-lucide="moon" class="w-4 h-4 text-slate-600 dark:hidden"></i>
+                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-300"></i>
                 </button>
 
-                <!-- Clock -->
                 <div class="hidden md:flex flex-col items-end">
-                    <span class="text-[10px] font-bold text-zinc-500 uppercase">Live System Clock</span>
-                    <span id="clock" class="text-xl font-mono font-medium">00:00:00</span>
+                    <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">System Time</span>
+                    <span id="clock" class="text-lg font-mono font-semibold text-slate-800 dark:text-white">00:00:00</span>
                 </div>
 
-                <!-- Sync Status -->
-                <div class="flex flex-col items-end border-l border-zinc-200 dark:border-brand-border pl-8">
-                    <span class="text-[10px] font-bold text-zinc-500 uppercase">Sync Status</span>
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-soft"></div>
+                <div class="flex flex-col items-end border-l border-slate-300 dark:border-ocean-border pl-6">
+                    <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Uplink Status</span>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-soft shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
                         <span id="syncStatus"
-                            class="text-sm font-mono font-medium text-emerald-500 uppercase">00:00:00</span>
+                            class="text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400">00:00:00</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    <nav class="max-w-[1400px] mx-auto px-6 mt-6">
-        <div class="flex gap-8 border-b border-zinc-200 dark:border-brand-border">
+    <nav class="max-w-[1400px] mx-auto px-6 mt-8">
+        <div class="flex gap-8 border-b border-slate-200 dark:border-ocean-border relative">
             <button onclick="switchTab('monitoring')" id="tab-monitoring"
-                class="pb-3 text-xs font-bold tracking-widest uppercase transition-all tab-active">Monitoring</button>
+                class="tab-btn pb-4 text-xs font-bold tracking-widest uppercase transition-all tab-active">Telemetry</button>
             <button onclick="switchTab('reports')" id="tab-reports"
-                class="pb-3 text-xs font-bold tracking-widest uppercase transition-all text-zinc-500 hover:text-brand-accent">Reports</button>
+                class="tab-btn pb-4 text-xs font-bold tracking-widest uppercase transition-all text-slate-500 dark:text-slate-400 hover:text-aqua-500">Analytics</button>
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="max-w-[1400px] mx-auto px-6 py-8">
 
-        <!-- Monitoring Section -->
-        <section id="section-monitoring" class="space-y-8 block">
-            <div class="flex justify-between items-end">
+        <section id="section-monitoring" class="space-y-8 block animate-[fadeIn_0.5s_ease-out]">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                 <div>
-                    <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">Real-time <span
-                            class="text-brand-accent">Telemetry</span></h2>
-                    <p class="text-zinc-500 mt-2">Live data sequence from underwater probe</p>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Live <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-400 dark:from-cyan-400 dark:to-blue-500">Telemetry</span></h2>
+                    <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Real-time data sequence from underwater probe</p>
                 </div>
                 <button onclick="refreshSystem()" id="refreshBtn"
-                    class="px-6 py-2 bg-zinc-800 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-zinc-700 dark:hover:bg-zinc-300 transition-all flex items-center gap-2">
-                    <i data-lucide="refresh-cw" class="w-3 h-3" id="refreshIcon"></i>
-                    Refresh System
+                    class="px-5 py-2.5 bg-white dark:bg-ocean-card border border-slate-200 dark:border-ocean-border text-slate-700 dark:text-aqua-50 rounded-xl text-xs font-bold uppercase tracking-widest hover:border-cyan-400 hover:text-cyan-600 dark:hover:border-cyan-400 dark:hover:text-cyan-400 transition-all flex items-center gap-2 shadow-sm">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="refreshIcon"></i>
+                    Sync Data
                 </button>
             </div>
 
-            <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- PH Card -->
-                <div
-                    class="p-6 rounded-2xl bg-white dark:bg-brand-card border border-zinc-200 dark:border-brand-border group hover:border-cyan-500/50 transition-all duration-300 relative overflow-hidden">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3
-                            class="flex items-center gap-2 text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
-                            <i data-lucide="flask-conical" class="w-3 h-3"></i> PH Level
-                        </h3>
-                        <span
-                            class="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[8px] font-black rounded-full border border-emerald-500/20 uppercase">Optimal</span>
+                <div class="glass p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 w-24 h-24 bg-cyan-400/10 rounded-full blur-xl group-hover:bg-cyan-400/20 transition-all"></div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg text-cyan-600 dark:text-cyan-400">
+                                <i data-lucide="flask-conical" class="w-4 h-4"></i>
+                            </div>
+                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                                PH Level
+                            </h3>
+                        </div>
+                        <span class="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-black rounded-full border border-emerald-200 dark:border-emerald-500/20 uppercase tracking-wider">Optimal</span>
                     </div>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-bold transition-all group-hover:scale-105" id="val-ph">0.0</span>
-                        <span class="text-zinc-500 text-sm">pH</span>
+                    <div class="flex items-baseline gap-2 relative z-10">
+                        <span class="text-5xl font-black text-slate-800 dark:text-white tracking-tight" id="val-ph">0.0</span>
+                        <span class="text-slate-500 dark:text-slate-400 font-medium">pH</span>
                     </div>
-                    <div class="absolute bottom-0 left-0 h-1 w-full bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
-                    </div>
+                    <div class="absolute bottom-0 left-0 h-1.5 w-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-80"></div>
                 </div>
 
-                <!-- Water Turbidity Card -->
-                <div
-                    class="p-6 rounded-2xl bg-white dark:bg-brand-card border border-zinc-200 dark:border-brand-border group hover:border-blue-500/50 transition-all duration-300 relative overflow-hidden">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3
-                            class="flex items-center gap-2 text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
-                            <i data-lucide="droplets" class="w-3 h-3"></i> Water Turbidity
-                        </h3>
-                        <span
-                            class="px-2 py-1 bg-blue-500/10 text-blue-500 text-[8px] font-black rounded-full border border-blue-500/20 uppercase">Good</span>
+                <div class="glass p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-400/10 rounded-full blur-xl group-hover:bg-blue-400/20 transition-all"></div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                                <i data-lucide="droplets" class="w-4 h-4"></i>
+                            </div>
+                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                                Turbidity
+                            </h3>
+                        </div>
+                        <span class="px-2.5 py-1 bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[9px] font-black rounded-full border border-blue-200 dark:border-blue-500/20 uppercase tracking-wider">Clear</span>
                     </div>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-bold transition-all group-hover:scale-105" id="val-water">0</span>
-                        <span class="text-zinc-500 text-sm">NTU</span>
+                    <div class="flex items-baseline gap-2 relative z-10">
+                        <span class="text-5xl font-black text-slate-800 dark:text-white tracking-tight" id="val-water">0</span>
+                        <span class="text-slate-500 dark:text-slate-400 font-medium">NTU</span>
                     </div>
-                    <div class="absolute bottom-0 left-0 h-1 w-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                    </div>
+                    <div class="absolute bottom-0 left-0 h-1.5 w-full bg-gradient-to-r from-blue-400 to-indigo-500 opacity-80"></div>
                 </div>
 
-                <!-- Battery Card -->
-                <div
-                    class="p-6 rounded-2xl bg-white dark:bg-brand-card border border-zinc-200 dark:border-brand-border group hover:border-purple-500/50 transition-all duration-300 relative overflow-hidden">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3
-                            class="flex items-center gap-2 text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
-                            <i data-lucide="battery-charging" class="w-3 h-3"></i> Battery Status
-                        </h3>
-                        <span
-                            class="px-2 py-1 bg-purple-500/10 text-purple-500 text-[8px] font-black rounded-full border border-purple-500/20 uppercase">Charging</span>
+                <div class="glass p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 w-24 h-24 bg-teal-400/10 rounded-full blur-xl group-hover:bg-teal-400/20 transition-all"></div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-teal-100 dark:bg-teal-900/30 rounded-lg text-teal-600 dark:text-teal-400">
+                                <i data-lucide="battery-charging" class="w-4 h-4"></i>
+                            </div>
+                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                                Power Cell
+                            </h3>
+                        </div>
+                        <span class="px-2.5 py-1 bg-teal-100 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400 text-[9px] font-black rounded-full border border-teal-200 dark:border-teal-500/20 uppercase tracking-wider">Active</span>
                     </div>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-bold transition-all group-hover:scale-105" id="val-battery">0</span>
-                        <span class="text-zinc-500 text-sm">%</span>
+                    <div class="flex items-baseline gap-2 relative z-10">
+                        <span class="text-5xl font-black text-slate-800 dark:text-white tracking-tight" id="val-battery">0</span>
+                        <span class="text-slate-500 dark:text-slate-400 font-medium">%</span>
                     </div>
-                    <div
-                        class="absolute bottom-0 left-0 h-1 w-full bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-                    </div>
+                    <div class="absolute bottom-0 left-0 h-1.5 w-full bg-gradient-to-r from-teal-400 to-cyan-500 opacity-80"></div>
                 </div>
             </div>
 
-            <!-- Charts Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- pH Chart Container -->
-                <div
-                    class="p-8 rounded-2xl bg-white dark:bg-brand-card border border-zinc-200 dark:border-brand-border">
-                    <div class="flex justify-between items-center mb-8">
+                <div class="glass p-6 md:p-8 rounded-2xl relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-6">
                         <div class="flex items-center gap-3">
-                            <div class="w-1.5 h-6 bg-cyan-500 rounded-full"></div>
-                            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-100">pH
-                                Level Trend</h3>
+                            <div class="w-2 h-8 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full"></div>
+                            <div>
+                                <h3 class="text-sm font-bold uppercase tracking-widest text-slate-800 dark:text-slate-100">pH Level Trend</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5">Historical plot over last 20 ticks</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="h-[300px] w-full">
+                    <div class="h-[280px] w-full relative z-10">
                         <canvas id="phChart"></canvas>
                     </div>
                 </div>
 
-                <!-- Turbidity Chart Container -->
-                <div
-                    class="p-8 rounded-2xl bg-white dark:bg-brand-card border border-zinc-200 dark:border-brand-border">
-                    <div class="flex justify-between items-center mb-8">
+                <div class="glass p-6 md:p-8 rounded-2xl relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-6">
                         <div class="flex items-center gap-3">
-                            <div class="w-1.5 h-6 bg-blue-500 rounded-full"></div>
-                            <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
-                                Turbidity Trend (NTU)</h3>
+                            <div class="w-2 h-8 bg-gradient-to-b from-blue-400 to-indigo-500 rounded-full"></div>
+                            <div>
+                                <h3 class="text-sm font-bold uppercase tracking-widest text-slate-800 dark:text-slate-100">Turbidity Trend</h3>
+                                <p class="text-[10px] text-slate-400 mt-0.5">Suspended particles density (NTU)</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="h-[300px] w-full">
+                    <div class="h-[280px] w-full relative z-10">
                         <canvas id="turbidityChart"></canvas>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Reports Section -->
-        <section id="section-reports" class="space-y-8 hidden">
+        <section id="section-reports" class="space-y-8 hidden animate-[fadeIn_0.5s_ease-out]">
             <div>
-                <h2 class="text-3xl font-bold text-zinc-900 dark:text-white">Data <span
-                        class="text-brand-accent">Reports</span></h2>
-                <p class="text-zinc-500 mt-2">Historical summary and sensor analytics</p>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Data <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-400 dark:from-cyan-400 dark:to-blue-500">Analytics</span></h2>
+                <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Historical summary and sensor logs</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Summary Card -->
-                <div class="lg:col-span-1 p-6 rounded-2xl glass space-y-6">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-xs font-bold uppercase tracking-widest">Report Summary</h3>
-                        <select onchange="fetchReports(this.value)"
-                            class="bg-transparent border-none text-[10px] font-bold uppercase text-brand-accent focus:ring-0 cursor-pointer">
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center p-3 rounded-xl bg-zinc-100 dark:bg-zinc-800/50">
-                            <span class="text-xs text-zinc-500 font-bold uppercase">Avg PH</span>
-                            <span id="rep-avg-ph" class="font-bold">0.00</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 rounded-xl bg-zinc-100 dark:bg-zinc-800/50">
-                            <span class="text-xs text-zinc-500 font-bold uppercase">Max Turbidity</span>
-                            <span id="rep-max-turb" class="font-bold">0 NTU</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 rounded-xl bg-zinc-100 dark:bg-zinc-800/50">
-                            <span class="text-xs text-zinc-500 font-bold uppercase">Log Count</span>
-                            <span id="rep-total-logs" class="font-bold">0</span>
+                <div class="lg:col-span-1 p-6 md:p-8 rounded-2xl glass space-y-8 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/5 rounded-full blur-2xl"></div>
+                    
+                    <div class="flex justify-between items-center relative z-10">
+                        <h3 class="text-sm font-bold uppercase tracking-widest text-slate-800 dark:text-slate-100">Summary</h3>
+                        <div class="bg-slate-100 dark:bg-ocean-border rounded-lg px-2 py-1">
+                            <select onchange="fetchReports(this.value)"
+                                class="bg-transparent border-none text-[11px] font-bold uppercase text-blue-600 dark:text-aqua-400 focus:ring-0 cursor-pointer outline-none">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
                         </div>
                     </div>
-                    <button onclick="exportToPDF()" id="pdfBtn"
-                        class="w-full py-4 bg-brand-accent text-white rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-blue-600 transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="download" class="w-4 h-4"></i>
-                        <span>Export Full Report (PDF)</span>
-                    </button>
 
-                    <!-- Mini Chart for Reports -->
-                    <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800">
-                        <h4 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-4">Period Overview
-                        </h4>
-                        <div class="h-[150px]">
+                    <div class="space-y-3 relative z-10">
+                        <div class="flex justify-between items-center p-4 rounded-xl bg-white/50 dark:bg-ocean-dark/50 border border-white/40 dark:border-ocean-border/50 backdrop-blur-sm">
+                            <span class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-cyan-400"></div> Avg PH</span>
+                            <span id="rep-avg-ph" class="font-black text-slate-700 dark:text-white">0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center p-4 rounded-xl bg-white/50 dark:bg-ocean-dark/50 border border-white/40 dark:border-ocean-border/50 backdrop-blur-sm">
+                            <span class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div> Max Turbidity</span>
+                            <span id="rep-max-turb" class="font-black text-slate-700 dark:text-white">0 NTU</span>
+                        </div>
+                        <div class="flex justify-between items-center p-4 rounded-xl bg-white/50 dark:bg-ocean-dark/50 border border-white/40 dark:border-ocean-border/50 backdrop-blur-sm">
+                            <span class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-teal-400"></div> Log Count</span>
+                            <span id="rep-total-logs" class="font-black text-slate-700 dark:text-white">0</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-200 dark:border-ocean-border relative z-10">
+                        <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Period Overview</h4>
+                        <div class="h-[140px]">
                             <canvas id="reportChart"></canvas>
                         </div>
                     </div>
+
+                    <button onclick="exportToPDF()" id="pdfBtn"
+                        class="w-full py-4 mt-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white rounded-xl font-bold uppercase tracking-widest text-[11px] transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 relative z-10">
+                        <i data-lucide="file-down" class="w-4 h-4"></i>
+                        <span>Export PDF Document</span>
+                    </button>
                 </div>
 
-                <!-- History Table -->
-                <div
-                    class="lg:col-span-2 rounded-2xl bg-white dark:bg-brand-card border border-zinc-200 dark:border-brand-border overflow-hidden">
-                    <table class="w-full text-left">
-                        <thead class="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-brand-border">
-                            <tr>
-                                <th class="px-6 py-4 text-[10px] font-black uppercase text-zinc-500">Timestamp</th>
-                                <th class="px-6 py-4 text-[10px] font-black uppercase text-zinc-500">pH</th>
-                                <th class="px-6 py-4 text-[10px] font-black uppercase text-zinc-500">Turbidity (NTU)
-                                </th>
-                                <th class="px-6 py-4 text-[10px] font-black uppercase text-zinc-500">Battery</th>
-                            </tr>
-                        </thead>
-                        <tbody id="report-table-body" class="divide-y divide-zinc-100 dark:divide-zinc-800">
-                            <tr id="report-table-placeholder">
-                                <td colspan="4" class="px-6 py-10 text-center text-xs text-zinc-400">Memuat data...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="lg:col-span-2 rounded-2xl glass overflow-hidden flex flex-col h-full">
+                    <div class="p-6 border-b border-slate-200 dark:border-ocean-border bg-white/40 dark:bg-ocean-card/40">
+                        <h3 class="text-sm font-bold uppercase tracking-widest text-slate-800 dark:text-slate-100">Data Log Register</h3>
+                    </div>
+                    <div class="overflow-x-auto overflow-y-auto max-h-[500px]">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="sticky top-0 bg-slate-100/90 dark:bg-ocean-dark/90 backdrop-blur-md z-10">
+                                <tr>
+                                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-wider">Timestamp</th>
+                                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-wider">pH Level</th>
+                                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-wider">Turbidity</th>
+                                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-wider">Power</th>
+                                </tr>
+                            </thead>
+                            <tbody id="report-table-body" class="divide-y divide-slate-100 dark:divide-ocean-border/50">
+                                <tr id="report-table-placeholder">
+                                    <td colspan="4" class="px-6 py-12 text-center text-xs font-medium text-slate-400 dark:text-slate-500">
+                                        <i data-lucide="database" class="w-6 h-6 mx-auto mb-2 opacity-50"></i>
+                                        Memuat data arsip...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="max-w-[1400px] mx-auto px-6 py-12 text-center">
-        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em]">Automatic Synchronization Active -
-            PHON 32 OS 1.0</p>
+    <footer class="max-w-[1400px] mx-auto px-6 py-8 mt-auto text-center border-t border-slate-200/50 dark:border-ocean-border/50">
+        <p class="text-[10px] text-slate-500 dark:text-slate-500 font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+            PHON 32 OS 2.0 • Aquatic Edition
+        </p>
     </footer>
 
     <script>
@@ -363,13 +415,13 @@
                 repSection.classList.add('hidden');
                 monTab.classList.add('tab-active');
                 repTab.classList.remove('tab-active');
-                repTab.classList.add('text-zinc-500');
+                repTab.classList.add('text-slate-500', 'dark:text-slate-400');
             } else {
                 monSection.classList.add('hidden');
                 repSection.classList.remove('hidden');
                 repTab.classList.add('tab-active');
                 monTab.classList.remove('tab-active');
-                monTab.classList.add('text-zinc-500');
+                monTab.classList.add('text-slate-500', 'dark:text-slate-400');
             }
         }
 
@@ -378,8 +430,19 @@
 
         function initCharts() {
             const isDark = document.documentElement.classList.contains('dark');
-            const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
-            const textColor = isDark ? '#71717a' : '#71717a';
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.04)';
+            const textColor = isDark ? '#64748b' : '#94a3b8';
+
+            // Gradien untuk Line Chart
+            const ctxPh = document.getElementById('phChart').getContext('2d');
+            const gradientPh = ctxPh.createLinearGradient(0, 0, 0, 300);
+            gradientPh.addColorStop(0, 'rgba(6, 182, 212, 0.2)');
+            gradientPh.addColorStop(1, 'rgba(6, 182, 212, 0)');
+
+            const ctxTurbidity = document.getElementById('turbidityChart').getContext('2d');
+            const gradientTurb = ctxTurbidity.createLinearGradient(0, 0, 0, 300);
+            gradientTurb.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+            gradientTurb.addColorStop(1, 'rgba(59, 130, 246, 0)');
 
             // Common options
             const chartOptions = {
@@ -392,25 +455,27 @@
                 scales: {
                     x: {
                         grid: { display: false },
-                        ticks: { color: textColor, font: { size: 10 } }
+                        ticks: { color: textColor, font: { size: 10, family: "'Outfit', sans-serif" } }
                     }
                 },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: isDark ? '#18181b' : '#fff',
-                        titleColor: isDark ? '#fff' : '#000',
-                        bodyColor: isDark ? '#ccc' : '#444',
+                        backgroundColor: isDark ? 'rgba(10, 23, 43, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                        titleColor: isDark ? '#fff' : '#0f172a',
+                        bodyColor: isDark ? '#cbd5e1' : '#475569',
                         borderWidth: 1,
-                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderColor: isDark ? 'rgba(6, 182, 212, 0.2)' : 'rgba(0, 0, 0, 0.05)',
                         padding: 12,
-                        boxPadding: 6
+                        cornerRadius: 8,
+                        titleFont: { family: "'Outfit', sans-serif", size: 13, weight: 'bold' },
+                        bodyFont: { family: "'Outfit', sans-serif", size: 12 }
                     }
                 }
             };
 
             // pH Chart
-            phChart = new Chart(document.getElementById('phChart').getContext('2d'), {
+            phChart = new Chart(ctxPh, {
                 type: 'line',
                 data: {
                     labels: Array.from({ length: 20 }, (_, i) => ''),
@@ -418,11 +483,15 @@
                         label: 'pH',
                         data: Array(20).fill(null),
                         borderColor: '#06b6d4',
-                        backgroundColor: 'rgba(6,182,212,0.1)',
-                        borderWidth: 2,
+                        backgroundColor: gradientPh,
+                        borderWidth: 2.5,
                         tension: 0.4,
                         fill: true,
                         pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#06b6d4',
+                        pointHoverBorderWidth: 2,
                     }]
                 },
                 options: {
@@ -432,7 +501,7 @@
                         y: {
                             min: 0,
                             max: 14,
-                            grid: { color: gridColor },
+                            grid: { color: gridColor, drawBorder: false },
                             ticks: { color: textColor, font: { size: 10 }, stepSize: 2 }
                         }
                     }
@@ -440,7 +509,7 @@
             });
 
             // Turbidity Chart
-            turbidityChart = new Chart(document.getElementById('turbidityChart').getContext('2d'), {
+            turbidityChart = new Chart(ctxTurbidity, {
                 type: 'line',
                 data: {
                     labels: Array.from({ length: 20 }, (_, i) => ''),
@@ -448,11 +517,15 @@
                         label: 'Turbidity (NTU)',
                         data: Array(20).fill(null),
                         borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59,130,246,0.1)',
-                        borderWidth: 2,
+                        backgroundColor: gradientTurb,
+                        borderWidth: 2.5,
                         tension: 0.4,
                         fill: true,
                         pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#3b82f6',
+                        pointHoverBorderWidth: 2,
                     }]
                 },
                 options: {
@@ -462,7 +535,7 @@
                         y: {
                             min: 0,
                             suggestedMax: 3000,
-                            grid: { color: gridColor },
+                            grid: { color: gridColor, drawBorder: false },
                             ticks: { color: textColor, font: { size: 10 } }
                         }
                     }
@@ -473,23 +546,22 @@
         function updateChartTheme() {
             if (phChart) phChart.destroy();
             if (turbidityChart) turbidityChart.destroy();
+            if (reportChart) reportChart.destroy();
             initCharts();
+            // Render ulang chart report jika tab report sedang aktif (opsional, tapi aman dilakukan)
+            fetchReports(document.querySelector('select')?.value || 'daily');
         }
 
         // Fetch Real Data from API
         let lastDataId = null;
 
-        // fungsi fetchData() yang untuk FIREBASE 
         async function fetchData() {
             try {
-                // Ganti dengan URL Firebase Anda. Tambahkan ".json" di akhir (wajib untuk REST API Firebase).
-                // Parameter orderBy="$key"&limitToLast=1 berfungsi untuk mengambil 1 data paling baru saja.
                 const firebaseUrl = 'https://console.firebase.google.com/u/0/project/underwater-rov-14154/database/underwater-rov-14154-default-rtdb/data/~2F.json?';
                 const response = await fetch(firebaseUrl);
                 const data = await response.json();
 
                 if (data && data !== null) {
-                    // Firebase mengembalikan objek dengan struktur unik (ada ID random), kita perlu mengekstrak isinya
                     const keys = Object.keys(data);
                     const latestKey = keys[0];
                     const realData = data[latestKey];
@@ -497,12 +569,10 @@
                     if (latestKey !== lastDataId) {
                         lastDataId = latestKey;
 
-                        // Update teks di HTML
                         document.getElementById('val-ph').textContent = parseFloat(realData.kualitas_air).toFixed(1);
                         document.getElementById('val-water').textContent = Math.floor(realData.tahan);
                         document.getElementById('val-battery').textContent = Math.floor(realData.daya_listrik);
 
-                        // Update Grafik
                         if (phChart) {
                             phChart.data.datasets[0].data.shift();
                             phChart.data.datasets[0].data.push(parseFloat(realData.kualitas_air));
@@ -514,15 +584,15 @@
                             turbidityChart.update('none');
                         }
 
-                        // Reset status sync
                         startTime = Date.now();
-                        document.getElementById('syncStatus').className = "text-sm font-mono font-medium text-emerald-500 uppercase";
+                        const syncEl = document.getElementById('syncStatus');
+                        syncEl.className = "text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400";
                     }
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
                 document.getElementById('syncStatus').textContent = "OFFLINE";
-                document.getElementById('syncStatus').className = "text-sm font-mono font-medium text-amber-500 uppercase";
+                document.getElementById('syncStatus').className = "text-sm font-mono font-bold text-rose-500 uppercase";
             }
         }
 
@@ -539,10 +609,11 @@
                 data: {
                     labels: ['Avg pH', 'Max NTU (Scaled)'],
                     datasets: [{
-                        data: [avgPh, maxTurb / 10], // Scaled for visibility
+                        data: [avgPh, maxTurb / 10], 
                         backgroundColor: ['#06b6d4', '#3b82f6'],
-                        borderRadius: 8,
-                        barThickness: 20
+                        borderRadius: 6,
+                        barThickness: 24,
+                        borderSkipped: false
                     }]
                 },
                 options: {
@@ -552,18 +623,19 @@
                         y: {
                             beginAtZero: true,
                             max: 14,
-                            grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
+                            grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', drawBorder: false },
                             ticks: { display: false }
                         },
-                        x: { grid: { display: false }, ticks: { font: { size: 9 }, color: '#71717a' } }
+                        x: { grid: { display: false, drawBorder: false }, ticks: { font: { size: 10, family: "'Outfit'" }, color: isDark ? '#94a3b8' : '#64748b' } }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
                 }
             });
         }
 
         async function fetchReports(period = 'daily') {
             try {
+                // Endpoint asli
                 const response = await fetch(`api.php?get_reports=true&period=${period}`);
                 const result = await response.json();
 
@@ -578,12 +650,11 @@
 
                     initReportChart(ph, turb);
 
-                    // === ISI TABEL HISTORY DARI API (DATA REAL) ===
                     const tbody = document.getElementById('report-table-body');
                     const history = result.history || [];
 
                     if (history.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-10 text-center text-xs text-zinc-400">Tidak ada data untuk periode ini.</td></tr>`;
+                        tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-12 text-center text-xs text-slate-400">Tidak ada data untuk periode ini.</td></tr>`;
                     } else {
                         tbody.innerHTML = history.map(row => {
                             const ts = row.timestamp || '-';
@@ -591,32 +662,29 @@
                             const ntu_val = Math.floor(row.tahan);
                             const bat_val = Math.floor(row.daya_listrik);
 
-                            // Warna badge baterai
-                            const batColor = bat_val >= 60 ? 'text-emerald-500' : bat_val >= 30 ? 'text-amber-500' : 'text-red-500';
+                            const batColor = bat_val >= 60 ? 'text-emerald-500' : bat_val >= 30 ? 'text-amber-500' : 'text-rose-500';
 
                             return `
-                                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
-                                    <td class="px-6 py-4 text-xs font-mono text-zinc-400">${ts}</td>
-                                    <td class="px-6 py-4 text-xs font-bold">${ph_val}</td>
-                                    <td class="px-6 py-4 text-xs font-bold">${ntu_val} NTU</td>
-                                    <td class="px-6 py-4 text-xs font-bold ${batColor}">${bat_val}%</td>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-ocean-card transition-colors group">
+                                    <td class="px-6 py-3 text-[11px] font-mono text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200">${ts}</td>
+                                    <td class="px-6 py-3 text-xs font-bold text-slate-700 dark:text-slate-200">${ph_val}</td>
+                                    <td class="px-6 py-3 text-xs font-bold text-slate-700 dark:text-slate-200">${ntu_val} <span class="text-[9px] text-slate-400 font-normal">NTU</span></td>
+                                    <td class="px-6 py-3 text-xs font-bold ${batColor}">${bat_val}%</td>
                                 </tr>
                             `;
                         }).join('');
                     }
                 } else {
-                    // Jika server mengembalikan bukan success
                     document.getElementById('report-table-body').innerHTML =
-                        `<tr><td colspan="4" class="px-6 py-10 text-center text-xs text-red-400">Gagal memuat data: ${result.message || 'Unknown error'}</td></tr>`;
+                        `<tr><td colspan="4" class="px-6 py-10 text-center text-xs text-rose-400">Gagal memuat data: ${result.message || 'Unknown error'}</td></tr>`;
                 }
             } catch (error) {
                 console.error('Error fetching reports:', error);
                 document.getElementById('report-table-body').innerHTML =
-                    `<tr><td colspan="4" class="px-6 py-10 text-center text-xs text-red-400">Koneksi ke server gagal.</td></tr>`;
+                    `<tr><td colspan="4" class="px-6 py-10 text-center text-xs text-rose-400">Gagal terhubung ke API pelaporan.</td></tr>`;
             }
         }
 
-        // Fungsi Refresh System (tombol di header Monitoring)
         async function refreshSystem() {
             const btn = document.getElementById('refreshBtn');
             const icon = document.getElementById('refreshIcon');
@@ -633,6 +701,7 @@
             icon.classList.remove('animate-spin');
             lucide.createIcons();
         }
+        
         initCharts();
         setInterval(fetchData, 3000);
         setInterval(() => fetchReports(document.querySelector('select')?.value || 'daily'), 30000);
@@ -644,21 +713,20 @@
             const btn = document.getElementById('pdfBtn');
             const originalText = btn.innerHTML;
 
-            // UI Feedback
             btn.disabled = true;
-            btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generating...';
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> <span>Mempersiapkan Dokumen...</span>';
             lucide.createIcons();
 
             const element = document.getElementById('section-reports');
+            const isDark = document.documentElement.classList.contains('dark');
             const opt = {
                 margin: 10,
-                filename: 'SE-PHON32-Report.pdf',
+                filename: 'SE-PHON32-Analytic-Report.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: document.documentElement.classList.contains('dark') ? '#09090b' : '#ffffff' },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: isDark ? '#040d1a' : '#f0f9ff' },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
             };
 
-            // Run html2pdf
             html2pdf().set(opt).from(element).save().then(() => {
                 btn.disabled = false;
                 btn.innerHTML = originalText;
