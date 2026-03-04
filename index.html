@@ -557,36 +557,47 @@
 
         async function fetchData() {
             try {
+                // 1. URL diarahkan tepat ke folder utama "drone_log"
                 const firebaseUrl = 'https://underwater-rov-14154-default-rtdb.asia-southeast1.firebasedatabase.app/drone_log.json?orderBy="$key"&limitToLast=1';
                 const response = await fetch(firebaseUrl);
                 const data = await response.json();
 
                 if (data && data !== null) {
+                    // 2. Mengekstrak data secara otomatis dari dalam "log_001"
                     const keys = Object.keys(data);
                     const latestKey = keys[0];
                     const realData = data[latestKey];
 
-                    if (latestKey !== lastDataId) {
-                        lastDataId = latestKey;
+                    // 3. LOGIKA BARU: Mengecek perubahan pada "isi data", bukan hanya pada ID.
+                    // Ini memungkinkan web langsung update ketika Anda mengetik angka baru di Firebase!
+                    const currentDataString = JSON.stringify(realData);
 
-                        document.getElementById('val-ph').textContent = parseFloat(realData.kualitas_air).toFixed(1);
-                        document.getElementById('val-water').textContent = Math.floor(realData.tahan);
-                        document.getElementById('val-battery').textContent = Math.floor(realData.daya_listrik);
+                    if (currentDataString !== lastDataId) {
+                        lastDataId = currentDataString; // Simpan data terbaru sebagai pembanding
 
-                        if (phChart) {
-                            phChart.data.datasets[0].data.shift();
-                            phChart.data.datasets[0].data.push(parseFloat(realData.kualitas_air));
-                            phChart.update('none');
+                        // 4. Validasi anti-NaN: Pastikan data benar-benar ada isinya
+                        if (realData && realData.kualitas_air !== undefined) {
+                            document.getElementById('val-ph').textContent = parseFloat(realData.kualitas_air).toFixed(1);
+                            document.getElementById('val-water').textContent = Math.floor(realData.tahan);
+                            document.getElementById('val-battery').textContent = Math.floor(realData.daya_listrik);
+
+                            // Update grafik
+                            if (phChart) {
+                                phChart.data.datasets[0].data.shift();
+                                phChart.data.datasets[0].data.push(parseFloat(realData.kualitas_air));
+                                phChart.update('none');
+                            }
+                            if (turbidityChart) {
+                                turbidityChart.data.datasets[0].data.shift();
+                                turbidityChart.data.datasets[0].data.push(parseFloat(realData.tahan));
+                                turbidityChart.update('none');
+                            }
+
+                            // Update status lampu hijau
+                            startTime = Date.now();
+                            const syncEl = document.getElementById('syncStatus');
+                            syncEl.className = "text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400";
                         }
-                        if (turbidityChart) {
-                            turbidityChart.data.datasets[0].data.shift();
-                            turbidityChart.data.datasets[0].data.push(parseFloat(realData.tahan));
-                            turbidityChart.update('none');
-                        }
-
-                        startTime = Date.now();
-                        const syncEl = document.getElementById('syncStatus');
-                        syncEl.className = "text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400";
                     }
                 }
             } catch (error) {
