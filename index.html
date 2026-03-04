@@ -557,7 +557,7 @@
 
         async function fetchData() {
             try {
-                const firebaseUrl = 'https://underwater-rov-14154-default-rtdb.asia-southeast1.firebasedatabase.app/.json?';
+                const firebaseUrl = 'https://underwater-rov-14154-default-rtdb.asia-southeast1.firebasedatabase.app/drone_log.json?orderBy="$key"&limitToLast=1';
                 const response = await fetch(firebaseUrl);
                 const data = await response.json();
 
