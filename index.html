@@ -25,40 +25,28 @@
                             800: '#075985',
                             900: '#0c4a6e',
                             950: '#082f49',
-                            dark: '#040d1a',   // Laut dalam
-                            card: '#0a172b',   // Kartu dark mode
-                            border: '#152c4d', // Border biru gelap
+                            dark: '#040d1a',
+                            card: '#0a172b',
+                            border: '#152c4d',
                         },
                         aqua: {
                             400: '#22d3ee',
                             500: '#06b6d4',
-                            accent: '#00e6e6'  // Aksen neon cyan
+                            accent: '#00e6e6'
                         }
-                    },
-                    boxShadow: {
-                        'glow': '0 0 20px rgba(6, 182, 212, 0.3)',
-                        'glow-dark': '0 0 20px rgba(0, 230, 230, 0.15)',
                     }
                 }
             }
         }
     </script>
     <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
         @keyframes pulse-soft {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.6; }
         }
-
         .animate-pulse-soft {
             animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-
-        /* Glassmorphism Effect */
         .glass {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(16px);
@@ -66,61 +54,25 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 8px 32px 0 rgba(0, 100, 200, 0.05);
         }
-
         .dark .glass {
             background: rgba(10, 23, 43, 0.65);
             border: 1px solid rgba(6, 182, 212, 0.15);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-
-        .dark ::-webkit-scrollbar-thumb {
-            background: #1e3a5f;
-        }
-
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background: #06b6d4;
-        }
-
-        /* Tab Transitions */
-        .tab-btn {
-            position: relative;
-        }
-        
-        .tab-active {
-            color: #06b6d4;
-            font-weight: 700;
-        }
-        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #1e3a5f; }
+        .tab-btn { position: relative; }
+        .tab-active { color: #06b6d4; font-weight: 700; }
         .tab-active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #06b6d4;
-            border-radius: 2px;
-            box-shadow: 0 0 8px #06b6d4;
+            content: ''; position: absolute; bottom: -2px; left: 0;
+            width: 100%; height: 2px; background: #06b6d4; border-radius: 2px; box-shadow: 0 0 8px #06b6d4;
         }
     </style>
 </head>
 
-<body
-    class="bg-ocean-50 dark:bg-ocean-dark text-slate-800 dark:text-slate-200 min-h-screen font-sans transition-colors duration-500 relative overflow-x-hidden">
+<body class="bg-ocean-50 dark:bg-ocean-dark text-slate-800 dark:text-slate-200 min-h-screen font-sans transition-colors duration-500 relative overflow-x-hidden">
 
     <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
         <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400/20 dark:bg-aqua-500/10 rounded-full blur-[100px]"></div>
@@ -140,23 +92,19 @@
             </div>
 
             <div class="flex items-center gap-6 md:gap-8">
-                <button id="themeToggle"
-                    class="p-2.5 rounded-xl bg-white/50 dark:bg-ocean-card/50 border border-slate-200 dark:border-ocean-border hover:bg-white dark:hover:bg-ocean-border transition-all shadow-sm">
+                <button id="themeToggle" class="p-2.5 rounded-xl bg-white/50 dark:bg-ocean-card/50 border border-slate-200 dark:border-ocean-border hover:bg-white dark:hover:bg-ocean-border transition-all shadow-sm">
                     <i data-lucide="moon" class="w-4 h-4 text-slate-600 dark:hidden"></i>
                     <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-300"></i>
                 </button>
-
                 <div class="hidden md:flex flex-col items-end">
                     <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">System Time</span>
                     <span id="clock" class="text-lg font-mono font-semibold text-slate-800 dark:text-white">00:00:00</span>
                 </div>
-
                 <div class="flex flex-col items-end border-l border-slate-300 dark:border-ocean-border pl-6">
                     <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Uplink Status</span>
                     <div class="flex items-center gap-2 mt-0.5">
                         <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-soft shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-                        <span id="syncStatus"
-                            class="text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400">00:00:00</span>
+                        <span id="syncStatus" class="text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400">00:00:00</span>
                     </div>
                 </div>
             </div>
@@ -165,24 +113,19 @@
 
     <nav class="max-w-[1400px] mx-auto px-6 mt-8">
         <div class="flex gap-8 border-b border-slate-200 dark:border-ocean-border relative">
-            <button onclick="switchTab('monitoring')" id="tab-monitoring"
-                class="tab-btn pb-4 text-xs font-bold tracking-widest uppercase transition-all tab-active">Telemetry</button>
-            <button onclick="switchTab('reports')" id="tab-reports"
-                class="tab-btn pb-4 text-xs font-bold tracking-widest uppercase transition-all text-slate-500 dark:text-slate-400 hover:text-aqua-500">Analytics</button>
+            <button onclick="switchTab('monitoring')" id="tab-monitoring" class="tab-btn pb-4 text-xs font-bold tracking-widest uppercase transition-all tab-active">Telemetry</button>
+            <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn pb-4 text-xs font-bold tracking-widest uppercase transition-all text-slate-500 dark:text-slate-400 hover:text-aqua-500">Analytics</button>
         </div>
     </nav>
 
     <main class="max-w-[1400px] mx-auto px-6 py-8">
-
         <section id="section-monitoring" class="space-y-8 block animate-[fadeIn_0.5s_ease-out]">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Live <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-400 dark:from-cyan-400 dark:to-blue-500">Telemetry</span></h2>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Live <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-400 dark:from-cyan-400 dark:to-blue-500">Telemetry</span></h2>
                     <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Real-time data sequence from underwater probe</p>
                 </div>
-                <button onclick="refreshSystem()" id="refreshBtn"
-                    class="px-5 py-2.5 bg-white dark:bg-ocean-card border border-slate-200 dark:border-ocean-border text-slate-700 dark:text-aqua-50 rounded-xl text-xs font-bold uppercase tracking-widest hover:border-cyan-400 hover:text-cyan-600 dark:hover:border-cyan-400 dark:hover:text-cyan-400 transition-all flex items-center gap-2 shadow-sm">
+                <button onclick="refreshSystem()" id="refreshBtn" class="px-5 py-2.5 bg-white dark:bg-ocean-card border border-slate-200 dark:border-ocean-border text-slate-700 dark:text-aqua-50 rounded-xl text-xs font-bold uppercase tracking-widest hover:border-cyan-400 hover:text-cyan-600 dark:hover:border-cyan-400 dark:hover:text-cyan-400 transition-all flex items-center gap-2 shadow-sm">
                     <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="refreshIcon"></i>
                     Sync Data
                 </button>
@@ -275,7 +218,6 @@
                         <canvas id="phChart"></canvas>
                     </div>
                 </div>
-
                 <div class="glass p-6 md:p-8 rounded-2xl relative overflow-hidden">
                     <div class="flex justify-between items-center mb-6">
                         <div class="flex items-center gap-3">
@@ -294,82 +236,9 @@
         </section>
 
         <section id="section-reports" class="space-y-8 hidden animate-[fadeIn_0.5s_ease-out]">
-            <div>
-                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Data <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-400 dark:from-cyan-400 dark:to-blue-500">Analytics</span></h2>
-                <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Historical summary and sensor logs</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1 p-6 md:p-8 rounded-2xl glass space-y-8 relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/5 rounded-full blur-2xl"></div>
-                    
-                    <div class="flex justify-between items-center relative z-10">
-                        <h3 class="text-sm font-bold uppercase tracking-widest text-slate-800 dark:text-slate-100">Summary</h3>
-                        <div class="bg-slate-100 dark:bg-ocean-border rounded-lg px-2 py-1">
-                            <select onchange="fetchReports(this.value)"
-                                class="bg-transparent border-none text-[11px] font-bold uppercase text-blue-600 dark:text-aqua-400 focus:ring-0 cursor-pointer outline-none">
-                                <option value="daily">Daily</option>
-                                <option value="weekly">Weekly</option>
-                                <option value="monthly">Monthly</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3 relative z-10">
-                        <div class="flex justify-between items-center p-4 rounded-xl bg-white/50 dark:bg-ocean-dark/50 border border-white/40 dark:border-ocean-border/50 backdrop-blur-sm">
-                            <span class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-cyan-400"></div> Avg PH</span>
-                            <span id="rep-avg-ph" class="font-black text-slate-700 dark:text-white">0.00</span>
-                        </div>
-                        <div class="flex justify-between items-center p-4 rounded-xl bg-white/50 dark:bg-ocean-dark/50 border border-white/40 dark:border-ocean-border/50 backdrop-blur-sm">
-                            <span class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div> Max Turbidity</span>
-                            <span id="rep-max-turb" class="font-black text-slate-700 dark:text-white">0 NTU</span>
-                        </div>
-                        <div class="flex justify-between items-center p-4 rounded-xl bg-white/50 dark:bg-ocean-dark/50 border border-white/40 dark:border-ocean-border/50 backdrop-blur-sm">
-                            <span class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-teal-400"></div> Log Count</span>
-                            <span id="rep-total-logs" class="font-black text-slate-700 dark:text-white">0</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-6 border-t border-slate-200 dark:border-ocean-border relative z-10">
-                        <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Period Overview</h4>
-                        <div class="h-[140px]">
-                            <canvas id="reportChart"></canvas>
-                        </div>
-                    </div>
-
-                    <button onclick="exportToPDF()" id="pdfBtn"
-                        class="w-full py-4 mt-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white rounded-xl font-bold uppercase tracking-widest text-[11px] transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 relative z-10">
-                        <i data-lucide="file-down" class="w-4 h-4"></i>
-                        <span>Export PDF Document</span>
-                    </button>
-                </div>
-
-                <div class="lg:col-span-2 rounded-2xl glass overflow-hidden flex flex-col h-full">
-                    <div class="p-6 border-b border-slate-200 dark:border-ocean-border bg-white/40 dark:bg-ocean-card/40">
-                        <h3 class="text-sm font-bold uppercase tracking-widest text-slate-800 dark:text-slate-100">Data Log Register</h3>
-                    </div>
-                    <div class="overflow-x-auto overflow-y-auto max-h-[500px]">
-                        <table class="w-full text-left border-collapse">
-                            <thead class="sticky top-0 bg-slate-100/90 dark:bg-ocean-dark/90 backdrop-blur-md z-10">
-                                <tr>
-                                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-wider">Timestamp</th>
-                                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-wider">pH Level</th>
-                                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-wider">Turbidity</th>
-                                    <th class="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-wider">Power</th>
-                                </tr>
-                            </thead>
-                            <tbody id="report-table-body" class="divide-y divide-slate-100 dark:divide-ocean-border/50">
-                                <tr id="report-table-placeholder">
-                                    <td colspan="4" class="px-6 py-12 text-center text-xs font-medium text-slate-400 dark:text-slate-500">
-                                        <i data-lucide="database" class="w-6 h-6 mx-auto mb-2 opacity-50"></i>
-                                        Memuat data arsip...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="p-6 md:p-8 rounded-2xl glass text-center">
+                <h3 class="text-lg font-bold text-slate-500 dark:text-slate-400 uppercase">Analytics Disabled</h3>
+                <p class="text-sm text-slate-400 mt-2">Tab Analytics dinonaktifkan sementara karena migrasi ke Firebase.</p>
             </div>
         </section>
     </main>
@@ -382,10 +251,9 @@
     </footer>
 
     <script>
-        // Init Lucide Icons
         lucide.createIcons();
 
-        // Theme Management
+        // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         const theme = localStorage.getItem('theme') || 'dark';
         if (theme === 'light') document.documentElement.classList.remove('dark');
@@ -396,14 +264,12 @@
             updateChartTheme();
         });
 
-        // Clock Management
+        // Waktu & Stopwatch
         let startTime = Date.now();
         function updateClock() {
             const now = new Date();
-            const time = now.toLocaleTimeString('id-ID', { hour12: false });
-            document.getElementById('clock').textContent = time;
+            document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
 
-            // Stopwatch for sync
             const elapsed = Math.floor((Date.now() - startTime) / 1000);
             const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
             const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
@@ -413,7 +279,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Tab Management
+        // Switch Tab
         function switchTab(tab) {
             const monSection = document.getElementById('section-monitoring');
             const repSection = document.getElementById('section-reports');
@@ -435,15 +301,13 @@
             }
         }
 
-        // Chart.js Implementation
+        // Charts
         let phChart, turbidityChart;
-
         function initCharts() {
             const isDark = document.documentElement.classList.contains('dark');
             const gridColor = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.04)';
             const textColor = isDark ? '#64748b' : '#94a3b8';
 
-            // Gradien untuk Line Chart
             const ctxPh = document.getElementById('phChart').getContext('2d');
             const gradientPh = ctxPh.createLinearGradient(0, 0, 0, 300);
             gradientPh.addColorStop(0, 'rgba(6, 182, 212, 0.2)');
@@ -454,120 +318,52 @@
             gradientTurb.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
             gradientTurb.addColorStop(1, 'rgba(59, 130, 246, 0)');
 
-            // Common options
             const chartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: textColor, font: { size: 10, family: "'Outfit', sans-serif" } }
-                    }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: isDark ? 'rgba(10, 23, 43, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-                        titleColor: isDark ? '#fff' : '#0f172a',
-                        bodyColor: isDark ? '#cbd5e1' : '#475569',
-                        borderWidth: 1,
-                        borderColor: isDark ? 'rgba(6, 182, 212, 0.2)' : 'rgba(0, 0, 0, 0.05)',
-                        padding: 12,
-                        cornerRadius: 8,
-                        titleFont: { family: "'Outfit', sans-serif", size: 13, weight: 'bold' },
-                        bodyFont: { family: "'Outfit', sans-serif", size: 12 }
-                    }
-                }
+                responsive: true, maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                scales: { x: { grid: { display: false }, ticks: { color: textColor, font: { size: 10 } } } },
+                plugins: { legend: { display: false } }
             };
 
-            // pH Chart
             phChart = new Chart(ctxPh, {
                 type: 'line',
                 data: {
-                    labels: Array.from({ length: 20 }, (_, i) => ''),
+                    labels: Array.from({ length: 20 }, () => ''),
                     datasets: [{
-                        label: 'pH',
-                        data: Array(20).fill(null),
-                        borderColor: '#06b6d4',
-                        backgroundColor: gradientPh,
-                        borderWidth: 2.5,
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 0,
-                        pointHoverRadius: 6,
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: '#06b6d4',
-                        pointHoverBorderWidth: 2,
+                        label: 'pH', data: Array(20).fill(null),
+                        borderColor: '#06b6d4', backgroundColor: gradientPh,
+                        borderWidth: 2.5, tension: 0.4, fill: true, pointRadius: 0
                     }]
                 },
-                options: {
-                    ...chartOptions,
-                    scales: {
-                        ...chartOptions.scales,
-                        y: {
-                            min: 0,
-                            max: 14,
-                            grid: { color: gridColor, drawBorder: false },
-                            ticks: { color: textColor, font: { size: 10 }, stepSize: 2 }
-                        }
-                    }
-                }
+                options: { ...chartOptions, scales: { ...chartOptions.scales, y: { min: 0, max: 14, grid: { color: gridColor }, ticks: { color: textColor } } } }
             });
 
-            // Turbidity Chart
             turbidityChart = new Chart(ctxTurbidity, {
                 type: 'line',
                 data: {
-                    labels: Array.from({ length: 20 }, (_, i) => ''),
+                    labels: Array.from({ length: 20 }, () => ''),
                     datasets: [{
-                        label: 'Turbidity (NTU)',
-                        data: Array(20).fill(null),
-                        borderColor: '#3b82f6',
-                        backgroundColor: gradientTurb,
-                        borderWidth: 2.5,
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 0,
-                        pointHoverRadius: 6,
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: '#3b82f6',
-                        pointHoverBorderWidth: 2,
+                        label: 'NTU', data: Array(20).fill(null),
+                        borderColor: '#3b82f6', backgroundColor: gradientTurb,
+                        borderWidth: 2.5, tension: 0.4, fill: true, pointRadius: 0
                     }]
                 },
-                options: {
-                    ...chartOptions,
-                    scales: {
-                        ...chartOptions.scales,
-                        y: {
-                            min: 0,
-                            suggestedMax: 3000,
-                            grid: { color: gridColor, drawBorder: false },
-                            ticks: { color: textColor, font: { size: 10 } }
-                        }
-                    }
-                }
+                options: { ...chartOptions, scales: { ...chartOptions.scales, y: { min: 0, suggestedMax: 3000, grid: { color: gridColor }, ticks: { color: textColor } } } }
             });
         }
 
         function updateChartTheme() {
             if (phChart) phChart.destroy();
             if (turbidityChart) turbidityChart.destroy();
-            if (reportChart) reportChart.destroy();
             initCharts();
-            // Render ulang chart report jika tab report sedang aktif (opsional, tapi aman dilakukan)
-            fetchReports(document.querySelector('select')?.value || 'daily');
         }
 
-        // Fetch Real Data from API
+        // PERUBAHAN: Fungsi Fetch API yang diarahkan ke URL Baru
         let lastDataId = null;
 
         async function fetchData() {
             try {
-                // URL diarahkan langsung ke device_01.json
+                // MENGGUNAKAN URL FIREBASE ESP32 YANG BARU!
                 const firebaseUrl = 'https://drone-air-bc75f-default-rtdb.asia-southeast1.firebasedatabase.app/sensors/device_01.json';
                 const response = await fetch(firebaseUrl);
                 const realData = await response.json();
@@ -579,21 +375,19 @@
                         lastDataId = currentDataString;
 
                         if (realData.ph !== undefined) {
-                            // Masukkan data ke ID HTML masing-masing
+                            // Update UI Angka 
                             document.getElementById('val-ph').textContent = realData.ph !== null ? parseFloat(realData.ph).toFixed(2) : 'ERR';
                             document.getElementById('val-water').textContent = realData.ntu !== null ? parseFloat(realData.ntu).toFixed(1) : 'ERR';
                             document.getElementById('val-temp').textContent = realData.suhu_c !== null ? parseFloat(realData.suhu_c).toFixed(1) : 'ERR';
                             
-                            // Karena baterai tidak ada di kode ESP32, kita buat statis atau baca jika ada
+                            // Baterai Statis
                             document.getElementById('val-battery').textContent = realData.daya_listrik !== undefined ? Math.floor(realData.daya_listrik) : 100;
 
-                            // Update badge status air (JERNIH, KERUH, dll) dari ESP32
+                            // Badge Status Air (Jernih/Keruh)
                             const statusBadge = document.getElementById('status-water-badge');
-                            if (statusBadge) {
-                                statusBadge.textContent = realData.status || "UNKNOWN";
-                            }
+                            if (statusBadge) statusBadge.textContent = realData.status || "UNKNOWN";
 
-                            // Update grafik
+                            // Update Grafik
                             if (phChart && realData.ph !== null) {
                                 phChart.data.datasets[0].data.shift();
                                 phChart.data.datasets[0].data.push(parseFloat(realData.ph));
@@ -605,107 +399,25 @@
                                 turbidityChart.update('none');
                             }
 
-                            // Reset status lampu
+                            // Lampu Hijau Nyala
                             startTime = Date.now();
                             const syncEl = document.getElementById('syncStatus');
-                            syncEl.className = "text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400";
+                            if(syncEl) syncEl.className = "text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400";
                         }
                     }
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
-                document.getElementById('syncStatus').textContent = "OFFLINE";
-                document.getElementById('syncStatus').className = "text-sm font-mono font-bold text-rose-500 uppercase";
-            }
-        }
-
-        // Report Chart Management
-        let reportChart;
-        function initReportChart(avgPh = 0, maxTurb = 0) {
-            const ctxReport = document.getElementById('reportChart').getContext('2d');
-            if (reportChart) reportChart.destroy();
-
-            const isDark = document.documentElement.classList.contains('dark');
-
-            reportChart = new Chart(ctxReport, {
-                type: 'bar',
-                data: {
-                    labels: ['Avg pH', 'Max NTU (Scaled)'],
-                    datasets: [{
-                        data: [avgPh, maxTurb / 10], 
-                        backgroundColor: ['#06b6d4', '#3b82f6'],
-                        borderRadius: 6,
-                        barThickness: 24,
-                        borderSkipped: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 14,
-                            grid: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', drawBorder: false },
-                            ticks: { display: false }
-                        },
-                        x: { grid: { display: false, drawBorder: false }, ticks: { font: { size: 10, family: "'Outfit'" }, color: isDark ? '#94a3b8' : '#64748b' } }
-                    },
-                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                const syncEl = document.getElementById('syncStatus');
+                if(syncEl) {
+                    syncEl.textContent = "OFFLINE";
+                    syncEl.className = "text-sm font-mono font-bold text-rose-500 uppercase";
                 }
-            });
+            }
         }
 
         async function fetchReports(period = 'daily') {
-            try {
-                // Endpoint asli
-                const response = await fetch(`api.php?get_reports=true&period=${period}`);
-                const result = await response.json();
-
-                if (result.status === "success") {
-                    const s = result.summary;
-                    const ph = s.avg_kualitas_air ? parseFloat(s.avg_kualitas_air) : 0;
-                    const turb = s.max_tahan ? parseFloat(s.max_tahan) : 0;
-
-                    document.getElementById('rep-avg-ph').textContent = ph.toFixed(2);
-                    document.getElementById('rep-max-turb').textContent = Math.floor(turb) + " NTU";
-                    document.getElementById('rep-total-logs').textContent = s.total_logs || "0";
-
-                    initReportChart(ph, turb);
-
-                    const tbody = document.getElementById('report-table-body');
-                    const history = result.history || [];
-
-                    if (history.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-12 text-center text-xs text-slate-400">Tidak ada data untuk periode ini.</td></tr>`;
-                    } else {
-                        tbody.innerHTML = history.map(row => {
-                            const ts = row.timestamp || '-';
-                            const ph_val = parseFloat(row.kualitas_air).toFixed(1);
-                            const ntu_val = Math.floor(row.tahan);
-                            const bat_val = Math.floor(row.daya_listrik);
-
-                            const batColor = bat_val >= 60 ? 'text-emerald-500' : bat_val >= 30 ? 'text-amber-500' : 'text-rose-500';
-
-                            return `
-                                <tr class="hover:bg-slate-50 dark:hover:bg-ocean-card transition-colors group">
-                                    <td class="px-6 py-3 text-[11px] font-mono text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200">${ts}</td>
-                                    <td class="px-6 py-3 text-xs font-bold text-slate-700 dark:text-slate-200">${ph_val}</td>
-                                    <td class="px-6 py-3 text-xs font-bold text-slate-700 dark:text-slate-200">${ntu_val} <span class="text-[9px] text-slate-400 font-normal">NTU</span></td>
-                                    <td class="px-6 py-3 text-xs font-bold ${batColor}">${bat_val}%</td>
-                                </tr>
-                            `;
-                        }).join('');
-                    }
-                } else {
-                    document.getElementById('report-table-body').innerHTML =
-                        `<tr><td colspan="4" class="px-6 py-10 text-center text-xs text-rose-400">Gagal memuat data: ${result.message || 'Unknown error'}</td></tr>`;
-                }
-            } catch (error) {
-                console.error('Error fetching reports:', error);
-                document.getElementById('report-table-body').innerHTML =
-                    `<tr><td colspan="4" class="px-6 py-10 text-center text-xs text-rose-400">Gagal terhubung ke API pelaporan.</td></tr>`;
-            }
+            // Dinonaktifkan sementara karena tidak ada backend API.php
         }
 
         async function refreshSystem() {
@@ -717,7 +429,6 @@
             lucide.createIcons();
 
             await fetchData();
-            await fetchReports(document.querySelector('select')?.value || 'daily');
 
             btn.disabled = false;
             icon.setAttribute('data-lucide', 'refresh-cw');
@@ -727,40 +438,8 @@
         
         initCharts();
         setInterval(fetchData, 3000);
-        setInterval(() => fetchReports(document.querySelector('select')?.value || 'daily'), 30000);
         fetchData();
-        fetchReports();
 
-        // PDF Export Function
-        function exportToPDF() {
-            const btn = document.getElementById('pdfBtn');
-            const originalText = btn.innerHTML;
-
-            btn.disabled = true;
-            btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> <span>Mempersiapkan Dokumen...</span>';
-            lucide.createIcons();
-
-            const element = document.getElementById('section-reports');
-            const isDark = document.documentElement.classList.contains('dark');
-            const opt = {
-                margin: 10,
-                filename: 'SE-PHON32-Analytic-Report.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: isDark ? '#040d1a' : '#f0f9ff' },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-            };
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-                lucide.createIcons();
-            }).catch(err => {
-                console.error('PDF Error:', err);
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-                lucide.createIcons();
-            });
-        }
     </script>
 </body>
 
