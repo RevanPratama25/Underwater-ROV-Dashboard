@@ -363,8 +363,8 @@
 
         async function fetchData() {
             try {
-                // MENGGUNAKAN URL FIREBASE ESP32 YANG BARU!
-                const firebaseUrl = 'https://console.firebase.google.com/u/0/project/drone-air-bc75f/database/drone-air-bc75f-default-rtdb/data/~2F.json';
+                // PERBAIKAN: Gunakan URL REST API Database yang benar, bukan URL Console
+                const firebaseUrl = 'https://drone-air-bc75f-default-rtdb.asia-southeast1.firebasedatabase.app/sensors/device_01.json';
                 const response = await fetch(firebaseUrl);
                 const realData = await response.json();
 
@@ -374,40 +374,52 @@
                     if (currentDataString !== lastDataId) {
                         lastDataId = currentDataString;
 
-                        if (realData.ph !== undefined) {
-                            // Update UI Angka 
-                            document.getElementById('val-ph').textContent = realData.ph !== null ? parseFloat(realData.ph).toFixed(2) : 'ERR';
-                            document.getElementById('val-water').textContent = realData.ntu !== null ? parseFloat(realData.ntu).toFixed(1) : 'ERR';
-                            document.getElementById('val-temp').textContent = realData.suhu_c !== null ? parseFloat(realData.suhu_c).toFixed(1) : 'ERR';
-                            
-                            // Baterai Statis
-                            document.getElementById('val-battery').textContent = realData.daya_listrik !== undefined ? Math.floor(realData.daya_listrik) : 100;
+                        // 1. Ambil data sensor (menangani data baru dari ESP32 maupun data lawas di node 'logs')
+                        const phVal = realData.ph !== undefined ? realData.ph : (realData.logs?.volt_ph || 0);
+                        const ntuVal = realData.ntu !== undefined ? realData.ntu : (realData.logs?.ntu || 0);
+                        const tempVal = realData.suhu_c !== undefined ? realData.suhu_c : (realData.logs?.udara || 0);
+                        const statusVal = realData.status || realData.logs?.status || "UNKNOWN";
+                        
+                        // 2. Ambil data baterai dari node 'current' (dari gambar: daya_listrik = 0.8)
+                        let batVal = realData.current?.daya_listrik !== undefined ? realData.current.daya_listrik : 100;
+                        // Jika daya listrik berupa desimal (misal 0.8), ubah menjadi persentase (80%)
+                        if (batVal <= 1 && batVal > 0) {
+                            batVal = batVal * 100;
+                        }
 
-                            // Badge Status Air (Jernih/Keruh)
-                            const statusBadge = document.getElementById('status-water-badge');
-                            if (statusBadge) statusBadge.textContent = realData.status || "UNKNOWN";
+                        // 3. Update UI Text
+                        document.getElementById('val-ph').textContent = parseFloat(phVal).toFixed(2);
+                        document.getElementById('val-water').textContent = parseFloat(ntuVal).toFixed(1);
+                        document.getElementById('val-temp').textContent = parseFloat(tempVal).toFixed(1);
+                        document.getElementById('val-battery').textContent = Math.floor(batVal);
 
-                            // Update Grafik
-                            if (phChart && realData.ph !== null) {
-                                phChart.data.datasets[0].data.shift();
-                                phChart.data.datasets[0].data.push(parseFloat(realData.ph));
-                                phChart.update('none');
-                            }
-                            if (turbidityChart && realData.ntu !== null) {
-                                turbidityChart.data.datasets[0].data.shift();
-                                turbidityChart.data.datasets[0].data.push(parseFloat(realData.ntu));
-                                turbidityChart.update('none');
-                            }
+                        // 4. Update Badge Status Air
+                        const statusBadge = document.getElementById('status-water-badge');
+                        if (statusBadge) statusBadge.textContent = statusVal;
 
-                            // Lampu Hijau Nyala
-                            startTime = Date.now();
-                            const syncEl = document.getElementById('syncStatus');
-                            if(syncEl) syncEl.className = "text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400";
+                        // 5. Update Grafik
+                        if (phChart) {
+                            phChart.data.datasets[0].data.shift();
+                            phChart.data.datasets[0].data.push(parseFloat(phVal));
+                            phChart.update('none');
+                        }
+                        if (turbidityChart) {
+                            turbidityChart.data.datasets[0].data.shift();
+                            turbidityChart.data.datasets[0].data.push(parseFloat(ntuVal));
+                            turbidityChart.update('none');
+                        }
+
+                        // 6. Indikator Koneksi Berhasil
+                        startTime = Date.now();
+                        const syncEl = document.getElementById('syncStatus');
+                        if(syncEl) {
+                            syncEl.className = "text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400";
                         }
                     }
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
+                // Indikator Koneksi Terputus
                 const syncEl = document.getElementById('syncStatus');
                 if(syncEl) {
                     syncEl.textContent = "OFFLINE";
