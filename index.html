@@ -188,7 +188,7 @@
                 </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="glass p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                     <div class="absolute -right-6 -top-6 w-24 h-24 bg-cyan-400/10 rounded-full blur-xl group-hover:bg-cyan-400/20 transition-all"></div>
                     <div class="flex justify-between items-start mb-6 relative z-10">
@@ -196,11 +196,8 @@
                             <div class="p-2 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg text-cyan-600 dark:text-cyan-400">
                                 <i data-lucide="flask-conical" class="w-4 h-4"></i>
                             </div>
-                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                                PH Level
-                            </h3>
+                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">PH Level</h3>
                         </div>
-                        <span class="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[9px] font-black rounded-full border border-emerald-200 dark:border-emerald-500/20 uppercase tracking-wider">Optimal</span>
                     </div>
                     <div class="flex items-baseline gap-2 relative z-10">
                         <span class="text-5xl font-black text-slate-800 dark:text-white tracking-tight" id="val-ph">0.0</span>
@@ -216,11 +213,9 @@
                             <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
                                 <i data-lucide="droplets" class="w-4 h-4"></i>
                             </div>
-                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                                Turbidity
-                            </h3>
+                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Turbidity</h3>
                         </div>
-                        <span class="px-2.5 py-1 bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[9px] font-black rounded-full border border-blue-200 dark:border-blue-500/20 uppercase tracking-wider">Clear</span>
+                        <span id="status-water-badge" class="px-2.5 py-1 bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[9px] font-black rounded-full border border-blue-200 dark:border-blue-500/20 uppercase tracking-wider">UNKNOWN</span>
                     </div>
                     <div class="flex items-baseline gap-2 relative z-10">
                         <span class="text-5xl font-black text-slate-800 dark:text-white tracking-tight" id="val-water">0</span>
@@ -230,20 +225,35 @@
                 </div>
 
                 <div class="glass p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 w-24 h-24 bg-rose-400/10 rounded-full blur-xl group-hover:bg-rose-400/20 transition-all"></div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-rose-100 dark:bg-rose-900/30 rounded-lg text-rose-600 dark:text-rose-400">
+                                <i data-lucide="thermometer" class="w-4 h-4"></i>
+                            </div>
+                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Temperature</h3>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-2 relative z-10">
+                        <span class="text-5xl font-black text-slate-800 dark:text-white tracking-tight" id="val-temp">0.0</span>
+                        <span class="text-slate-500 dark:text-slate-400 font-medium">°C</span>
+                    </div>
+                    <div class="absolute bottom-0 left-0 h-1.5 w-full bg-gradient-to-r from-rose-400 to-red-500 opacity-80"></div>
+                </div>
+
+                <div class="glass p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
                     <div class="absolute -right-6 -top-6 w-24 h-24 bg-teal-400/10 rounded-full blur-xl group-hover:bg-teal-400/20 transition-all"></div>
                     <div class="flex justify-between items-start mb-6 relative z-10">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-teal-100 dark:bg-teal-900/30 rounded-lg text-teal-600 dark:text-teal-400">
                                 <i data-lucide="battery-charging" class="w-4 h-4"></i>
                             </div>
-                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                                Power Cell
-                            </h3>
+                            <h3 class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Power Cell</h3>
                         </div>
                         <span class="px-2.5 py-1 bg-teal-100 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400 text-[9px] font-black rounded-full border border-teal-200 dark:border-teal-500/20 uppercase tracking-wider">Active</span>
                     </div>
                     <div class="flex items-baseline gap-2 relative z-10">
-                        <span class="text-5xl font-black text-slate-800 dark:text-white tracking-tight" id="val-battery">0</span>
+                        <span class="text-5xl font-black text-slate-800 dark:text-white tracking-tight" id="val-battery">100</span>
                         <span class="text-slate-500 dark:text-slate-400 font-medium">%</span>
                     </div>
                     <div class="absolute bottom-0 left-0 h-1.5 w-full bg-gradient-to-r from-teal-400 to-cyan-500 opacity-80"></div>
@@ -557,43 +567,45 @@
 
         async function fetchData() {
             try {
-                // 1. URL diarahkan tepat ke folder utama "drone_log"
-                const firebaseUrl = 'https://underwater-rov-14154-default-rtdb.asia-southeast1.firebasedatabase.app/drone_log.json?orderBy="$key"&limitToLast=1';
+                // URL diarahkan langsung ke device_01.json
+                const firebaseUrl = 'https://drone-air-bc75f-default-rtdb.asia-southeast1.firebasedatabase.app/sensors/device_01.json';
                 const response = await fetch(firebaseUrl);
-                const data = await response.json();
+                const realData = await response.json();
 
-                if (data && data !== null) {
-                    // 2. Mengekstrak data secara otomatis dari dalam "log_001"
-                    const keys = Object.keys(data);
-                    const latestKey = keys[0];
-                    const realData = data[latestKey];
-
-                    // 3. LOGIKA BARU: Mengecek perubahan pada "isi data", bukan hanya pada ID.
-                    // Ini memungkinkan web langsung update ketika Anda mengetik angka baru di Firebase!
+                if (realData && realData !== null) {
                     const currentDataString = JSON.stringify(realData);
 
                     if (currentDataString !== lastDataId) {
-                        lastDataId = currentDataString; // Simpan data terbaru sebagai pembanding
+                        lastDataId = currentDataString;
 
-                        // 4. Validasi anti-NaN: Pastikan data benar-benar ada isinya
-                        if (realData && realData.kualitas_air !== undefined) {
-                            document.getElementById('val-ph').textContent = parseFloat(realData.kualitas_air).toFixed(1);
-                            document.getElementById('val-water').textContent = Math.floor(realData.tahan);
-                            document.getElementById('val-battery').textContent = Math.floor(realData.daya_listrik);
+                        if (realData.ph !== undefined) {
+                            // Masukkan data ke ID HTML masing-masing
+                            document.getElementById('val-ph').textContent = realData.ph !== null ? parseFloat(realData.ph).toFixed(2) : 'ERR';
+                            document.getElementById('val-water').textContent = realData.ntu !== null ? parseFloat(realData.ntu).toFixed(1) : 'ERR';
+                            document.getElementById('val-temp').textContent = realData.suhu_c !== null ? parseFloat(realData.suhu_c).toFixed(1) : 'ERR';
+                            
+                            // Karena baterai tidak ada di kode ESP32, kita buat statis atau baca jika ada
+                            document.getElementById('val-battery').textContent = realData.daya_listrik !== undefined ? Math.floor(realData.daya_listrik) : 100;
+
+                            // Update badge status air (JERNIH, KERUH, dll) dari ESP32
+                            const statusBadge = document.getElementById('status-water-badge');
+                            if (statusBadge) {
+                                statusBadge.textContent = realData.status || "UNKNOWN";
+                            }
 
                             // Update grafik
-                            if (phChart) {
+                            if (phChart && realData.ph !== null) {
                                 phChart.data.datasets[0].data.shift();
-                                phChart.data.datasets[0].data.push(parseFloat(realData.kualitas_air));
+                                phChart.data.datasets[0].data.push(parseFloat(realData.ph));
                                 phChart.update('none');
                             }
-                            if (turbidityChart) {
+                            if (turbidityChart && realData.ntu !== null) {
                                 turbidityChart.data.datasets[0].data.shift();
-                                turbidityChart.data.datasets[0].data.push(parseFloat(realData.tahan));
+                                turbidityChart.data.datasets[0].data.push(parseFloat(realData.ntu));
                                 turbidityChart.update('none');
                             }
 
-                            // Update status lampu hijau
+                            // Reset status lampu
                             startTime = Date.now();
                             const syncEl = document.getElementById('syncStatus');
                             syncEl.className = "text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400";
